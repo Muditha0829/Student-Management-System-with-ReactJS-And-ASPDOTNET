@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
 
 const columns = [
   { field: 'firstName', headerName: 'First Name'},
@@ -10,6 +11,46 @@ const columns = [
   { field: 'dateOfBirth', headerName: 'DoB' },
   { field: 'isGraduated', headerName: 'Grad Status' },
   { field: 'age', headerName: 'Age' },
+  {
+    headerName:"Update",
+    field: "Edit",
+    width: 150,
+    renderCell: (cellValues) => {
+      return (
+        <div>
+        <Button
+          variant="text"
+          color="primary"
+          onClick={(event) => {
+            // updateUpUser(event, cellValues.row.role,cellValues.row._id);
+            // console.log(cellValues.row._id)
+          }}>
+            Update
+        </Button>
+        </div>
+      );
+    }
+  },
+  {
+    headerName:"Delete",
+    field: "Delete",
+    width: 150,
+    renderCell: (cellValues) => {
+      return (
+        <div>
+        <Button
+          variant="text"
+          color="error"
+          onClick={(event) => {
+            // updateUpUser(event, cellValues.row.role,cellValues.row._id);
+            // console.log(cellValues.row._id)
+          }}>
+            Delete
+        </Button>
+        </div>
+      );
+    }
+  }
 ];
 
 function Student() {
@@ -38,6 +79,10 @@ function Student() {
       <div>
           
           <div><h3>Student Table</h3></div>
+
+          <div style={{marginBottom:10}}>
+          <Button variant="contained">Add Student</Button>
+          </div>
       
     <div style={{ height: 500, width: "auto" }}>
 
