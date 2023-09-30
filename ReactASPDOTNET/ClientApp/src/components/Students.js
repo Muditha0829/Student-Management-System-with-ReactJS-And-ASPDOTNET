@@ -5,7 +5,7 @@ export default function Students() {
 
   useEffect(() => {
     fetch("api/student")
-      .then((response) => {console.log(response)})
+    //   .then((response) => {console.log(response)})
     //   .then((data) => {
     //     console.log("The students are: ", data);
     //     setStudents(data);
@@ -41,20 +41,13 @@ export default function Students() {
           {students.map((student) => (
             <tr key={student.id}>
               <td>{student.firstName}</td>
-              <td>{student.firstName}</td>
-              <td>{student.firstName}</td>
-              <td>{student.firstName}</td>
-              <td>{student.firstName}</td>
-              <td>{student.firstName}</td>
-              <td>{student.firstName}</td>
-              <td>{student.firstName}</td>
-              {/* <td>{student.lastName}</td>
+              <td>{student.lastName}</td>
               <td>{student.className}</td>
               <td>{student.department}</td>
               <td>{student.gender}</td>
-              <td>{student.birthday}</td>
-              <td>{student.graduated}</td>
-              <td>{student.age}</td> */}
+              <td>{student.dateOfBirth}</td>
+              <td>{student.isGraduated}</td>
+              <td>{student.age}</td>
             </tr>
           ))}
         </tbody>
