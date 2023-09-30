@@ -1,57 +1,57 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { DataGrid } from '@mui/x-data-grid';
 
-export default function Students() {
-  const [students, setStudents] = useState([]);
+const columns = [
+  { field: 'firstName', headerName: 'First Name'},
+  { field: 'lastName', headerName: 'Last Name'},
+  { field: 'className', headerName: 'Class Name'},
+  { field: 'department', headerName: 'Department', width: 180},
+  { field: 'gender', headerName: 'Gender', width: 240 },
+  { field: 'dateOfBirth', headerName: 'DoB' },
+  { field: 'isGraduated', headerName: 'Grad Status' },
+  { field: 'age', headerName: 'Age' },
+];
+
+function Student() {
+
+  const [tableData, setTableData] = useState([])
 
   useEffect(() => {
     fetch("api/student")
-    //   .then((response) => {console.log(response)})
-    //   .then((data) => {
-    //     console.log("The students are: ", data);
-    //     setStudents(data);
-    //   })
       .then((response) => response.json())
       .then((data) => {
-        console.log("The students are: ", data);
-        setStudents(data);
+        // Transform the data before setting it in the state
+        const transformedData = data.map((student) => ({
+            ...student,
+            gender: student.gender === 0 ? "Male" : "Female",
+            isGraduated: student.isGraduated ? "Yes" : "No",
+          }));
+          console.log("The students are: ", transformedData);
+          setTableData(transformedData);
       })
       .catch((error) => {
         console.log("The error fetching student is: ", error);
       });
   }, []);
-
+    
   return (
-    <div>
-      <h1>This is Students Screen</h1>
+      <div>
+          
+          <div><h3>Student Table</h3></div>
+      
+    <div style={{ height: 500, width: "auto" }}>
 
-      <table>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Class Name</th>
-            <th>Department</th>
-            <th>Gender</th>
-            <th>Birthday</th>
-            <th>Graduated</th>
-            <th>Age</th>
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((student) => (
-            <tr key={student.id}>
-              <td>{student.firstName}</td>
-              <td>{student.lastName}</td>
-              <td>{student.className}</td>
-              <td>{student.department}</td>
-              <td>{student.gender}</td>
-              <td>{student.dateOfBirth}</td>
-              <td>{student.isGraduated}</td>
-              <td>{student.age}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <DataGrid
+        getRowId={(row) => row.id}
+        rows={tableData}
+        columns={columns}
+        pageSize={8}
+        rowsPerPageOptions={[5]}
+        // customToolbarSelect
+      />
+    </div>
     </div>
   );
 }
+
+export default Student;
