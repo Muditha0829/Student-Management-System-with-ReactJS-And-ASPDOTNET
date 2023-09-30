@@ -9,17 +9,18 @@ using ReactASPDOTNET.Models;
 
 namespace ReactASPDOTNET.Controllers
 {
-    [Route("api/student")]
     [ApiController]
+    [Route("api/student")]
+    //[Route("api/[controller]")]
     public class StudentController : ControllerBase
     {
         private readonly StudentServices _studentServices;
 
         public StudentController(StudentServices studentServices) {
             _studentServices = studentServices;
+        }
 
-               }
-        // GET: api/Student
+        // GET: api/student
         [HttpGet]
         public async Task<List<Student>> Get() => await _studentServices.GetAsync();
 
@@ -44,34 +45,34 @@ namespace ReactASPDOTNET.Controllers
         }
 
         // PUT: api/Student/6516a2d05fd8c96429b0f6e9
-        [HttpPut("{id:length(24)}")]
-        public async Task<ActionResult> Put(string id, Student updateStudent)
-        {
-            Student student = await _studentServices.GetAsync(id);
-            if (student == null)
-            {
-                return NotFound("There is no student with this id: " + id);
-            }
-            updateStudent.Id = student.Id;
+        //[HttpPut("{id:length(24)}")]
+        //public async Task<ActionResult> Put(string id, Student updateStudent)
+        //{
+        //    Student student = await _studentServices.GetAsync(id);
+        //    if (student == null)
+        //    {
+        //        return NotFound("There is no student with this id: " + id);
+        //    }
+        //    updateStudent.Id = student.Id;
 
-            await _studentServices.UpdateAsync(id, updateStudent);
+        //    await _studentServices.UpdateAsync(id, updateStudent);
 
-            return Ok("Updated Successfully");
-        }
+        //    return Ok("Updated Successfully");
+        //}
 
         // DELETE: api/Student/6516a2d05fd8c96429b0f6e9
-        [HttpDelete("{id:length(24}")]
-        public async Task<ActionResult> Delete(string id)
-        {
-            Student student = await _studentServices.GetAsync(id);
+        //[HttpDelete("{id:length(24}")]
+        //public async Task<ActionResult> Delete(string id)
+        //{
+        //    Student student = await _studentServices.GetAsync(id);
 
-            if (student == null)
-            {
-                return NotFound("There is no student with this id: " + id);
-            }
-                await _studentServices.RemoveAsync(id);
+        //    if (student == null)
+        //    {
+        //        return NotFound("There is no student with this id: " + id);
+        //    }
+        //        await _studentServices.RemoveAsync(id);
 
-            return Ok("Deleted Successfully");
-        }
+        //    return Ok("Deleted Successfully");
+        //}
     }
 }
