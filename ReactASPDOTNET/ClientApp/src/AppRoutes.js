@@ -13,7 +13,7 @@ const AppRoutes = [
     element: <Students />
   },
   {
-    path: '/edit',
+    path: '/edit/:id',
     element: <Edit />
   },
   {

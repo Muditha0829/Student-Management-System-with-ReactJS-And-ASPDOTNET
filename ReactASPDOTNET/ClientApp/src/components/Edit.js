@@ -1,7 +1,135 @@
-export default function Edit(){
-    return(
-        <div>
-            <h1>This is Edit Screen</h1>
-        </div>
-    )
+import {  Button, Grid, Link, Paper, TextField, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+// import { useNavigate} from 'react-router-dom';
+
+import {FormControl,FormLabel,RadioGroup,Radio,FormControlLabel,InputLabel,Select,MenuItem} from '@mui/material';
+import { useParams } from "react-router-dom";
+
+
+const paperStyle={padding:20, height:'auto', width:400, margin:'50px auto'};
+const textStyle={margin:'0px 0px 20px 0px'};
+const btnStyle={margin:'8px 0'};
+const bottomText={margin:'10px 0px 10px 0px'};
+const errorMsg = {width:"auto", padding: "15px", margin:"5px 0",fontSize: "15px",
+                  backgroundColor:"#f34646",color:"white",textAlign:"center", borderRadius:"4px"
+                };
+
+const Edit=()=>{
+
+    const { id } = useParams(); 
+
+    // const [data,setData] = useState({});
+    //   const navigate = useNavigate();
+    const [error,setError] = useState("")
+    const [student,setStudent] = useState({
+        firstName:'',
+        lastName:'',
+        className:'',
+        department:'',
+        gender:'',
+        dateOfBirth:'',
+        isGraduated:'',
+        age:''
+    });
+//6519067fac58cc4ad6062f7c
+    useEffect(()=>{
+
+        fetch("api/student/"+id).then(response => 
+        // fetch("api/student/6519067fac58cc4ad6062f7c").then(response => 
+            response.json()).then(data=>{
+                console.log(data)
+                setStudent(data)    
+            })
+        
+    },[])
+    
+    const handleChange = (e) =>{
+        setStudent({...student,[e.target.name]:e.target.value});}
+        
+        const handleSubmit = async (e) =>{
+            e.preventDefault();
+            
+            try{
+                const user = {
+                    "firstName":student.firstName,
+                    "lastName":student.lastName,
+                    "className":student.className,
+                    "department":student.department,
+                    "gender":student.gender,
+                    "dateOfBirth":student.dateOfBirth,
+                    "isGraduated":student.isGraduated,
+                    "age":student.age
+                }
+        console.log(user);
+        
+        fetch("api/student/"+id,{
+            method:"PUT",
+            body: JSON.stringify(user),
+            headers:{
+                "content-type":"application/json"
+            }
+        }).then(response=>{
+            console.log("Response of the backend for updating the student", response)
+        }).catch(error=>{
+            console.log("Error Message: ", error)
+        })
+        // await axios.post("http://localhost:4500/user/add",user).then(() => {
+            //   alert("User Created");
+            //   navigate('/signin');
+            // })
+        }catch(error){
+            console.log(error)
+            if(
+                error.response &&
+                error.response.status >=400 &&
+                error.response.status <=500
+                ){
+                    setError(error.response.data.message);
+                }
+            }
+            
+        }
+        
+        
+        return(
+            <Grid>
+      <Paper elevation={10} style={paperStyle}>
+        <Grid align='center'>
+          {/* <img src={Logo} alt="Logo" /> */}
+          <h2>Update Student </h2>
+        </Grid>
+        <form onSubmit={handleSubmit}>
+
+        <TextField label="Enter Your First Name" name="firstName" fullWidth required  value={student.firstName} style={textStyle} onChange={handleChange} />
+        <TextField label="Enter Your Last Name" name="lastName" fullWidth required  value={student.lastName}  style={textStyle} onChange={handleChange} />
+        <TextField label="Enter Your Class Name" name="className" fullWidth required style={textStyle} value={student.className} onChange={handleChange} />
+        <TextField label="Enter Your Department" name="department" fullWidth required style={textStyle} value={student.department} onChange={handleChange} />
+        
+        <FormControl >
+            <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
+            <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="Male" name="gender" value={student.gender} onChange={handleChange}>
+                <FormControlLabel value={1} control={<Radio />} label="Female" />
+                <FormControlLabel value={0} control={<Radio />} label="Male" />
+            </RadioGroup>
+        </FormControl>
+        {/* <TextField label="Enter Your DoB" name="dateOfBirth" fullWidth required style={textStyle} value={student.dateOfBirth} onChange={handleChange} /> */}
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Graduated Status</InputLabel>
+                <Select labelId="demo-simple-select-label" id="demo-simple-select" name = "isGraduated" style={textStyle} value={student.isGraduated} label="City" onChange={handleChange}>
+                    <MenuItem value={true}>Graduated</MenuItem>
+                    <MenuItem value={false}>Not Graduated</MenuItem>
+                </Select>
+        </FormControl>
+        <input type="date" name="dateOfBirth"  required style={textStyle} defaultValue={student.dateOfBirth.split("T")[0]} onChange={handleChange} ></input>
+        <TextField label="Enter Your age" name="age" fullWidth required style={textStyle} value={student.age} onChange={handleChange} />
+
+        {error && <div style={errorMsg}>{error}</div>}
+        <Button type="submit" color="primary" variant="contained" fullWidth style={btnStyle} >Update Student</Button>
+        </form>
+      </Paper>
+    </Grid>
+  );
 }
+
+
+export default Edit;

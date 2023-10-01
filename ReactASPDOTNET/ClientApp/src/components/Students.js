@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom'; 
 
 const columns = [
   { field: 'firstName', headerName: 'First Name'},
@@ -18,15 +19,12 @@ const columns = [
     renderCell: (cellValues) => {
       return (
         <div>
-        <Button
-          variant="text"
-          color="primary"
-          onClick={(event) => {
-            // updateUpUser(event, cellValues.row.role,cellValues.row._id);
-            // console.log(cellValues.row._id)
-          }}>
-            Update
-        </Button>
+            <Link to={`/edit/${cellValues.row.id}`}  style={{ textDecoration: 'none' }}>
+            <Button variant="text" color="primary">
+                Update
+              </Button>
+            </Link>
+        
         </div>
       );
     }
@@ -66,6 +64,7 @@ function Student() {
             ...student,
             gender: student.gender === 0 ? "Male" : "Female",
             isGraduated: student.isGraduated ? "Yes" : "No",
+            dateOfBirth : student.dateOfBirth.split("T")[0],
           }));
           console.log("The students are: ", transformedData);
           setTableData(transformedData);
