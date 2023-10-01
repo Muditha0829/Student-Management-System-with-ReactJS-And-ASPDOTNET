@@ -50,6 +50,18 @@ const New=()=>{
         }
         console.log(user);
 
+        fetch("api/student",{
+          method:"POST",
+          body: JSON.stringify(user),
+          headers:{
+            "content-type":"application/json"
+          }
+        }).then(response=>{
+          console.log("Response of the backend for adding the student", response)
+        }).catch(error=>{
+          console.log("Error Message: ", error)
+        })
+
         // await axios.post("http://localhost:4500/user/add",user).then(() => {
         //   alert("User Created");
         //   navigate('/signin');
@@ -87,19 +99,19 @@ const New=()=>{
         <FormControl >
             <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
             <RadioGroup aria-labelledby="demo-radio-buttons-group-label" defaultValue="Male" name="gender" value={student.gender} onChange={handleChange}>
-                <FormControlLabel value="Female" control={<Radio />} label="Female" />
-                <FormControlLabel value="Male" control={<Radio />} label="Male" />
+                <FormControlLabel value={1} control={<Radio />} label="Female" />
+                <FormControlLabel value={0} control={<Radio />} label="Male" />
             </RadioGroup>
         </FormControl>
-        <TextField label="Enter Your DoB" name="dateOfBirth" fullWidth required style={textStyle} value={student.dateOfBirth} onChange={handleChange} />
+        {/* <TextField label="Enter Your DoB" name="dateOfBirth" fullWidth required style={textStyle} value={student.dateOfBirth} onChange={handleChange} /> */}
         <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Graduated Status</InputLabel>
                 <Select labelId="demo-simple-select-label" id="demo-simple-select" name = "isGraduated" style={textStyle} value={student.isGraduated} label="City" onChange={handleChange}>
-                    <MenuItem value={"Graduated"}>Graduated</MenuItem>
-                    <MenuItem value={"Not Graduated"}>Not Graduated</MenuItem>
+                    <MenuItem value={true}>Graduated</MenuItem>
+                    <MenuItem value={false}>Not Graduated</MenuItem>
                 </Select>
         </FormControl>
-
+        <input type="date" name="dateOfBirth"    required style={textStyle} value={student.dateOfBirth} onChange={handleChange} ></input>
         <TextField label="Enter Your age" name="age" fullWidth required style={textStyle} value={student.age} onChange={handleChange} />
 
         {error && <div style={errorMsg}>{error}</div>}
